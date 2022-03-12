@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Builder_Pattern
@@ -44,11 +45,55 @@ namespace Builder_Pattern
     {
         void AddTitle();
         void AddDimensions();
-        void AddLogistics();
+        void AddLogistics(DateTime dateTime);
 
         // return the built item once we finished constructing it
         // each concrete builder class would be in charge of implementing its own method to do this
         // if the scenario is general enough, we can also add it here to make it cleaner, otherwise you should add this method in your concrete class
         InventoryReport GetDailyReport();
+    }
+
+    public class DailyReportBuilder : IFurnitureInventoryBuilder
+    {
+        // make sure every time the builder will have a new object to work with
+        // defensive programming, not required but good to have
+        private InventoryReport _report;
+        private IEnumerable<FurnitureItem> _items;
+
+        public DailyReportBuilder(IEnumerable<FurnitureItem> items)
+        {
+            Reset();
+            _items = items;
+        }
+
+        private void Reset()
+        {
+            _report = new InventoryReport();
+        }
+
+        public void AddDimensions()
+        {
+            _report.DimensionsSection = String.Join(Environment.NewLine, _items.Select(product =>
+                $"Product: {product.Name} \nPrice: {product.Price} \n" +
+                $"Height: {product.Height} x Width: {product.Width} -> Weight: {product.Weight}"
+            )); ;
+        }
+
+        public void AddLogistics(DateTime dateTime)
+        {
+            _report.LogisticsSection = $"Report generated on {dateTime}";
+        }
+
+        public void AddTitle()
+        {
+            _report.TitleSection = "------------- Daily Inventory Report ----------- \n\n";
+        }
+
+        public InventoryReport GetDailyReport()
+        {
+            InventoryReport finishedReport = _report;
+            Reset();
+            return finishedReport;
+        }
     }
 }
