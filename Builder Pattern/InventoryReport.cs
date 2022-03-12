@@ -41,6 +41,7 @@ namespace Builder_Pattern
         }
     }
 
+    // create a builder interface
     public interface IFurnitureInventoryBuilder
     {
         void AddTitle();
@@ -53,6 +54,7 @@ namespace Builder_Pattern
         InventoryReport GetDailyReport();
     }
 
+    // concrete builder implements interface
     public class DailyReportBuilder : IFurnitureInventoryBuilder
     {
         // make sure every time the builder will have a new object to work with
