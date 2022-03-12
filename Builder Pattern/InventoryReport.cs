@@ -45,6 +45,7 @@ namespace Builder_Pattern
     // create a builder interface
     public interface IFurnitureInventoryBuilder
     {
+        // change the method signature in fluent variation
         IFurnitureInventoryBuilder AddTitle();
         IFurnitureInventoryBuilder AddDimensions();
         IFurnitureInventoryBuilder AddLogistics(DateTime dateTime);
