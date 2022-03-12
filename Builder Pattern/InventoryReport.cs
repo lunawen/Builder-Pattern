@@ -78,7 +78,7 @@ namespace Builder_Pattern
             _report.DimensionsSection = String.Join(Environment.NewLine, _items.Select(product =>
                 $"Product: {product.Name} \nPrice: {product.Price} \n" +
                 $"Height: {product.Height} x Width: {product.Width} -> Weight: {product.Weight}"
-            )); ;
+            ));
         }
 
         public void AddLogistics(DateTime dateTime)
@@ -96,6 +96,26 @@ namespace Builder_Pattern
             InventoryReport finishedReport = _report;
             Reset();
             return finishedReport;
+        }
+    }
+
+    // add a director class
+    // used to execute the object's build steps in a predetermined sequence
+    // director classes are not already present in builder patterns because you can technically call the methods directly from any concrete builder class
+    // but this approach is not as clean as having a director class to take care of it
+    public class InventoryBuilderDirector
+    {
+        private IFurnitureInventoryBuilder _builder;
+        public InventoryBuilderDirector(IFurnitureInventoryBuilder builder)
+        {
+            _builder = builder;
+        }
+
+        public void CreateReport()
+        {
+            _builder.AddTitle();
+            _builder.AddDimensions();
+            _builder.AddLogistics(DateTime.UtcNow);
         }
     }
 }
