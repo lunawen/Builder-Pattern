@@ -33,6 +33,7 @@ namespace Builder_Pattern
 
         public string Debug()
         {
+            // this is a built-in builder pattern
             return new StringBuilder()
                 .AppendLine(TitleSection)
                 .AppendLine(DimensionsSection)
@@ -44,9 +45,9 @@ namespace Builder_Pattern
     // create a builder interface
     public interface IFurnitureInventoryBuilder
     {
-        void AddTitle();
-        void AddDimensions();
-        void AddLogistics(DateTime dateTime);
+        IFurnitureInventoryBuilder AddTitle();
+        IFurnitureInventoryBuilder AddDimensions();
+        IFurnitureInventoryBuilder AddLogistics(DateTime dateTime);
 
         // return the built item once we finished constructing it
         // each concrete builder class would be in charge of implementing its own method to do this
@@ -73,22 +74,25 @@ namespace Builder_Pattern
             _report = new InventoryReport();
         }
 
-        public void AddDimensions()
+        public IFurnitureInventoryBuilder AddDimensions()
         {
             _report.DimensionsSection = String.Join(Environment.NewLine, _items.Select(product =>
                 $"Product: {product.Name} \nPrice: {product.Price} \n" +
                 $"Height: {product.Height} x Width: {product.Width} -> Weight: {product.Weight}"
             ));
+            return this;
         }
 
-        public void AddLogistics(DateTime dateTime)
+        public IFurnitureInventoryBuilder AddLogistics(DateTime dateTime)
         {
             _report.LogisticsSection = $"Report generated on {dateTime}";
+            return this;
         }
 
-        public void AddTitle()
+        public IFurnitureInventoryBuilder AddTitle()
         {
             _report.TitleSection = "------------- Daily Inventory Report ----------- \n\n";
+            return this;
         }
 
         public InventoryReport GetDailyReport()

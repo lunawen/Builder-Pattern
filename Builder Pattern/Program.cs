@@ -16,6 +16,17 @@ namespace Builder_Pattern
 
             // create an instance of the concrete class
             var inventoryBuilder = new DailyReportBuilder(items);
+            // call methods directly to build object
+            // the fluent variation doesn't require a director class
+            var fluentReport = inventoryBuilder
+                .AddTitle()
+                .AddDimensions()
+                .AddLogistics(DateTime.UtcNow)
+                .GetDailyReport();
+
+            Console.WriteLine(fluentReport.Debug());
+
+            /*
             // set up a director class
             var director = new InventoryBuilderDirector(inventoryBuilder);
             // use director to build the item
@@ -23,6 +34,8 @@ namespace Builder_Pattern
             // get the report from the concrete class
             var directorReport = inventoryBuilder.GetDailyReport();
             Console.WriteLine(directorReport.Debug());
+
+            */
         }
     }
 }
