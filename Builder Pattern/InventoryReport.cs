@@ -22,6 +22,8 @@ namespace Builder_Pattern
         }
     }
 
+    // this is the complex object
+    // it doesn't have the constructor because we are going to set the values in the concrete builder representations
     public class InventoryReport
     {
         public string TitleSection;
@@ -36,5 +38,17 @@ namespace Builder_Pattern
                 .AppendLine(LogisticsSection)
                 .ToString();
         }
+    }
+
+    public interface IFurnitureInventoryBuilder
+    {
+        void AddTitle();
+        void AddDimensions();
+        void AddLogistics();
+
+        // return the built item once we finished constructing it
+        // each concrete builder class would be in charge of implementing its own method to do this
+        // if the scenario is general enough, we can also add it here to make it cleaner, otherwise you should add this method in your concrete class
+        InventoryReport GetDailyReport();
     }
 }
